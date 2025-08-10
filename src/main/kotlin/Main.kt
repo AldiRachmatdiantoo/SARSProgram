@@ -65,3 +65,35 @@ fun checkEnumForRole(text: String): String{
 
     }
 }
+fun handle(operation: Operation){
+    when(operation){
+        is Operation.Success -> {
+            repeat(3) {
+                Thread.sleep(1000)
+                print(".")
+            }
+            println()
+            println("Success: ${operation.msg}")
+
+        }
+        is Operation.Error -> {
+            repeat(3) {
+                Thread.sleep(1000)
+                print(".")
+            }
+            println()
+            println("Error: ${operation.msg}")
+
+        }
+        is Operation.Loading -> {
+            println()
+            println("Loading: ${operation.msg}")
+            repeat(3) {
+                Thread.sleep(1000)
+                print(".")
+            }
+
+        }
+
+    }
+}

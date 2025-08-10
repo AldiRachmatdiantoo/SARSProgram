@@ -3,6 +3,7 @@ package com.sars.auth
 import com.sars.connection.DatabaseConnection
 import checkNullOrBlank
 import com.sars.manager.Manager
+import handle
 import com.sars.admin.Admin
 import com.sars.employee.Employee
 
@@ -22,24 +23,34 @@ class Login {
         val checkEmail =  loginCheckEmail(checkUname, checkPass)
         val user = User(checkUname, checkEmail, checkRole)
         when(user.role){
-            Role.ADMIN -> Admin().menuAdmin(user)
-            Role.MANAGER -> Manager().menuManager()
-            Role.EMPLOYEE -> Employee().menuEmployee()
+            Role.ADMIN -> {
+                handle(Operation.Loading("menuju interface admin"))
+                Admin().menuAdmin(user)
+            }
+            Role.MANAGER -> {
+                handle(Operation.Loading("menuju interface manager"))
+                Manager().menuManager()
+        }
+            Role.EMPLOYEE -> {
+                handle(Operation.Loading("menuju interface employee"))
+                Employee().menuEmployee()
+            }
         }
         return
     }
 
     fun loginCheckUsername(): String {
         while (true) {
+            println()
             val name = checkNullOrBlank("Masukkan nama: ")
             val stmtSelectName = conn.prepareStatement("SELECT * FROM users WHERE name = ?")
             stmtSelectName.setString(1, name)
             val rs = stmtSelectName.executeQuery()
             if (rs.next()) {
-                println("Berhasil Menemukan username $name!")
+                handle(Operation.Success("berhasil memasukkan username"))
                 return name
             } else {
-                println("Nama tidak ditemukan! coba lagi..!")
+                handle(Operation.Error("username salah!"))
                 continue
             }
         }
@@ -47,6 +58,7 @@ class Login {
 
     fun loginCheckPassword(username: String): String{
         while (true){
+            println()
             print("Masukkan password: ")
             val password = readln()
             val stmtSelectPassword = conn.prepareStatement("SELECT * FROM users WHERE name = ?")
@@ -55,11 +67,11 @@ class Login {
             if (rs.next()){
                 val passwordDb = rs.getString("password")
                 if (passwordDb == password){
-                    println("Password Berhasil!")
+                    handle(Operation.Success("berhasil memasukkan password"))
                     return password
                 }
             } else {
-                println("Password salah")
+                handle(Operation.Error("Password salah"))
                 continue
             }
 
@@ -68,6 +80,7 @@ class Login {
     }
     fun checkRole(username: String, password: String): Role{
         while (true) {
+            println()
             val stmtSelectRole = conn.prepareStatement("SELECT role FROM users WHERE name = ? and password = ?")
             stmtSelectRole.setString(1, username)
             stmtSelectRole.setString(2, password)
@@ -77,12 +90,14 @@ class Login {
                 val roleStringToEnum = Role.valueOf(dataUserRole.uppercase())
                 return roleStringToEnum
             } else {
-                println("error!")
+                handle(Operation.Error("Pilihan Tidak Tersedia!"))
+                continue
             }
         }
     }
     fun loginCheckEmail(username: String, password: String): String{
         while (true) {
+            println()
             val stmtSelectEmail = conn.prepareStatement("SELECT email FROM users WHERE NAME = ? AND password = ?")
             stmtSelectEmail.setString(1, username)
             stmtSelectEmail.setString(2, password)
@@ -91,7 +106,8 @@ class Login {
                 val email = rs.getString("email")
                 return email
             } else {
-                println("error!")
+                handle(Operation.Error("Email Salah!"))
+                continue
             }
         }
     }

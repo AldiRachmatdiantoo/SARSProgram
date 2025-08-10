@@ -8,6 +8,7 @@ class Admin {
     val listMenuAdmin = mutableListOf("register new account", "view profile", "delete user", "keluar")
     fun menuAdmin(user: User){
         while (true) {
+            println("\n")
             println("=====ADMIN MENU=====")
             val chooseMenu = checkFilterList("Pilih: ", listMenuAdmin)
             when (chooseMenu) {
