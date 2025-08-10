@@ -1,3 +1,5 @@
+import com.sars.auth.Role
+
 fun main() {
     val toProgram = checkYesOrNo("Masuk ke program SARS? ")
     if (!toProgram){
@@ -42,5 +44,24 @@ fun checkFilterList(text: String, list: MutableList<String>): String{
             println("pilihan tidak ada, coba lagi!")
             continue
         }
+    }
+}
+fun checkEnumForRole(text: String): String{
+    val listRole = mutableListOf(Role.ADMIN, Role.EMPLOYEE, Role.MANAGER)
+    while (true){
+        listRole.forEachIndexed { index, value ->
+            println("${index+1}.$value")
+        }
+        print(text)
+        val choice = readln()
+        if (listRole.any { it.toString() == choice }){
+            return choice.uppercase()
+        } else {
+            println("\nRole tidak tersedia!\n")
+            continue
+        }
+
+
+
     }
 }
