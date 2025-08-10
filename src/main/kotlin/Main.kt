@@ -31,7 +31,7 @@ fun checkYesOrNo(text: String): Boolean {
         return choice.equals("y", true)
     }
 }
-fun checkFilterList(text: String, list: MutableList<String>): String{
+fun <T>checkFilterList(text: String, list: MutableList<T>): String{
     while (true){
         list.forEachIndexed { index, value ->
             println("${index+1}.$value")
@@ -53,7 +53,7 @@ fun checkEnumForRole(text: String): String{
             println("${index+1}.$value")
         }
         print(text)
-        val choice = readln()
+        val choice = readln().uppercase()
         if (listRole.any { it.toString() == choice }){
             return choice.uppercase()
         } else {
@@ -68,20 +68,10 @@ fun checkEnumForRole(text: String): String{
 fun handle(operation: Operation){
     when(operation){
         is Operation.Success -> {
-            repeat(3) {
-                Thread.sleep(1000)
-                print(".")
-            }
-            println()
             println("Success: ${operation.msg}")
 
         }
         is Operation.Error -> {
-            repeat(3) {
-                Thread.sleep(1000)
-                print(".")
-            }
-            println()
             println("Error: ${operation.msg}")
 
         }

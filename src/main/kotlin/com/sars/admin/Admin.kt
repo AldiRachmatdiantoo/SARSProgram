@@ -20,10 +20,10 @@ class Admin {
                     Profile().profile(user)
                     continue
                 }
-//                "delete user" -> {
-//                    Delete().delete()
-//                    continue
-//                }
+                "delete user" -> {
+                    Delete().delete(user)
+                    continue
+                }
                 "keluar" -> {
                     return
                 }
