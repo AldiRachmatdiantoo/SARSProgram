@@ -6,6 +6,7 @@ fun main() {
         println("Terima kasih!")
         return
     } else {
+        //start program
         Start().start()
     }
 
