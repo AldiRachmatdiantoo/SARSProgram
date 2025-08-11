@@ -78,10 +78,9 @@ class Login {
                         handle(Operation.LockedAccount("Kesempatan anda sudah habis! Akun Terkunci"))
                         exitProcess(0)
                     }
+
                 }
             }
-
-
         }
     }
     fun checkRole(username: String, password: String): Role{
