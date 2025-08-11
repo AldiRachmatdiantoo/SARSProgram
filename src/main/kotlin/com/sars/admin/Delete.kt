@@ -55,7 +55,25 @@ class Delete {
             println("${index+1}.Name: ${value.name}\nEmail: ${value.email}\nRole: ${value.role}\n")
         }
         val chooseDelete = checkNullOrBlank("siapa yang ingin anda hapus? ")
-        toDelete(chooseDelete)
+        val checks = checkUserIfTrue(chooseDelete)
+        if (!checks){
+            handle(Operation.Error("User Tidak Ada!"))
+            return
+        } else {
+            toDelete(chooseDelete)
+        }
+    }
+    fun checkUserIfTrue(chooseDelete: String): Boolean{
+        val stmtSelectUser = conn.prepareStatement(
+            "SELECT * FROM users where name = ?"
+        )
+        stmtSelectUser.setString(1, chooseDelete)
+        val rs = stmtSelectUser.executeQuery()
+        if (rs.next()){
+            val userDb = rs.getString("name")
+            return userDb == chooseDelete
+        }
+        return false
     }
     fun toDelete(chooseDelete: String){
         val stmtExecuteDelete = conn.prepareStatement("DELETE FROM users WHERE name = ?")
