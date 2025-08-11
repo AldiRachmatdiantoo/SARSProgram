@@ -5,7 +5,7 @@ import  checkFilterList
 import com.sars.auth.User
 
 class Admin {
-    val listMenuAdmin = mutableListOf("register new account", "view profile", "delete user", "keluar")
+    val listMenuAdmin = mutableListOf("register new account", "view profile", "view user", "delete user", "keluar")
     fun menuAdmin(user: User){
         while (true) {
             println("\n")
@@ -18,6 +18,10 @@ class Admin {
                 }
                 "view profile" -> {
                     Profile().profile(user)
+                    continue
+                }
+                "view user" -> {
+                    Profile().listUsersProfile()
                     continue
                 }
                 "delete user" -> {

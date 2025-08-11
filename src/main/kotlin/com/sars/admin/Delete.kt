@@ -62,6 +62,8 @@ class Delete {
         } else {
             toDelete(chooseDelete)
         }
+        conn.close()
+        stmtAllUser.close()
     }
     fun checkUserIfTrue(chooseDelete: String): Boolean{
         val stmtSelectUser = conn.prepareStatement(
@@ -73,13 +75,18 @@ class Delete {
             val userDb = rs.getString("name")
             return userDb == chooseDelete
         }
+        conn.close()
+        stmtSelectUser.close()
         return false
+
     }
     fun toDelete(chooseDelete: String){
         val stmtExecuteDelete = conn.prepareStatement("DELETE FROM users WHERE name = ?")
         stmtExecuteDelete.setString(1, chooseDelete)
         stmtExecuteDelete.executeUpdate()
         handle(Operation.Success("berhasil menghapus $chooseDelete!"))
-    }
 
+        conn.close()
+        stmtExecuteDelete.close()
+    }
 }

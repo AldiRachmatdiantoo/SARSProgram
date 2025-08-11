@@ -6,6 +6,8 @@ import com.sars.manager.Manager
 import handle
 import com.sars.admin.Admin
 import com.sars.employee.Employee
+import decreaseChance
+import kotlin.system.exitProcess
 
 class Login {
     val db = DatabaseConnection(
@@ -29,7 +31,7 @@ class Login {
             }
             Role.MANAGER -> {
                 handle(Operation.Loading("menuju interface manager"))
-                Manager().menuManager()
+                Manager().menuManager(user)
         }
             Role.EMPLOYEE -> {
                 handle(Operation.Loading("menuju interface employee"))
@@ -69,10 +71,14 @@ class Login {
                 if (passwordDb == password){
                     handle(Operation.Success("berhasil memasukkan password"))
                     return password
+                } else {
+                    handle(Operation.Error("Password salah"))
+                    val remainingChance = decreaseChance()
+                    if (remainingChance == 0){
+                        handle(Operation.LockedAccount("Kesempatan anda sudah habis! Akun Terkunci"))
+                        exitProcess(0)
+                    }
                 }
-            } else {
-                handle(Operation.Error("Password salah"))
-                continue
             }
 
 

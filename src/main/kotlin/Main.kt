@@ -1,5 +1,7 @@
 import com.sars.auth.Role
 
+
+var chance = 2
 fun main() {
     val toProgram = checkYesOrNo("Masuk ke program SARS? ")
     if (!toProgram){
@@ -83,8 +85,16 @@ fun handle(operation: Operation){
                 Thread.sleep(1000)
                 print(".")
             }
-
+        }
+        is Operation.LockedAccount -> {
+            println("Locked: ${operation.msg}")
         }
 
+
     }
+}
+fun decreaseChance(): Int{
+    val chanceMinusOne = chance--
+    println("\nkesempatan tersisa: $chanceMinusOne\n")
+    return chanceMinusOne
 }
